@@ -1,4 +1,5 @@
 mod always_error;
+mod get_json;
 mod hello_world;
 mod middleware_message;
 mod mirror_body_json;
@@ -8,6 +9,7 @@ mod mirror_user_agent;
 mod path_variables;
 mod query_params;
 mod read_middleware_custom_header;
+mod returns_201;
 mod set_middleware_custom_header;
 
 use always_error::always_error;
@@ -17,6 +19,7 @@ use axum::{
     routing::{get, post},
     Extension, Router,
 };
+use get_json::get_json;
 use hello_world::hello_world;
 use middleware_message::middleware_message;
 use mirror_body_json::mirror_body_json;
@@ -27,6 +30,7 @@ use path_variables::hard_coded_path;
 use path_variables::path_variables;
 use query_params::query_params;
 use read_middleware_custom_header::read_middleware_custom_header;
+use returns_201::returns_201;
 use set_middleware_custom_header::set_middleware_custom_header;
 use tower_http::cors::{Any, CorsLayer};
 use utoipa::{openapi, Modify, OpenApi, ToSchema};
@@ -73,4 +77,6 @@ pub fn create_route() -> Router {
         .layer(cors)
         .layer(Extension(shared_data))
         .route("/always_error", get(always_error))
+        .route("/returns_201", post(returns_201))
+        .route("/get_json", get(get_json))
 }
